@@ -2,12 +2,18 @@
 
 
 use Aura\Sql\ExtendedPdo;
+use Dompdf\Dompdf;
 
 // DIC configuration
 $container = $app->getContainer();
 
 $container['csrf'] = function ($c) {
     return new \Slim\Csrf\Guard;
+};
+
+$container['dompdf'] = function ($c) {
+    $dompdf = new Dompdf();
+    return $dompdf;
 };
 
 // PDO database library
