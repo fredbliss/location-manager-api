@@ -39,7 +39,7 @@ $app->group('/locations', function() {
         $date = $datetime->format("m-d-Y");
 
         #$file = new SplFileObject(__DIR__ . '/billboard-'.$args['id'].'-'.$date.'.pdf','w');
-        $strFilename = 'billboard-'.$args['id'].'-'.$date.'.pdf';
+        $strFilename = 'billboard-'.$billboard->billboard_id.'.pdf';
 
         $file = fopen(__DIR__ . '/'.$strFilename,'w+'); //will create if doesn't exist
 
@@ -59,11 +59,17 @@ $app->group('/locations', function() {
                     .header, .main, .footer, .images, .statistics{clear:both;}
                     .image {width:50%; float:left; text-align:center;display:inline-block;}
                     .image > img{width:300px;border:1px solid #000000;padding:0;}
-                    table{width:100%;margin:30px 0px 30px 0px;}
                     .text-center{text-align:center;}
                     .inside{display:inline-block;}
                     .title{float:left;}
                     .logo{float:right;}
+                    .spacer{height:3em;}
+                    .capitalize{text-transform:capitalize;}
+                    table{width:100%;margin:30px 0px 30px 0px;}
+                    td, th { border:1px solid #000000; padding:4px;}
+                    table { border-collapse: collapse; border:1px solid #000000;}
+                    th { background-color:#7f8fa9; color:#ffffff; font-size:0.6em;}
+                    td { background-color:#d8dbe2; font-size:0.6em;}
                 </style>
                 <title>Billboard Spec Sheet</title>
                 </head>
@@ -97,7 +103,7 @@ $app->group('/locations', function() {
                 </div>  
                 <div class="statistics">
                     <div class="inside">
-                    <table class="text-center">
+                    <table class="text-center capitalize">
                         <thead>  
                         <tr>
                             <th>City</th>
@@ -120,6 +126,22 @@ $app->group('/locations', function() {
                             <td>'.$billboard->faces.'</td>
                             <td>'.$billboard->illumination.'</td>
                             <td>'.$billboard->structure_type.'</td>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    <table class="text-center">
+                        <thead>  
+                        <tr>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>DEC Traffic Counts</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>'.$billboard->latitude.'</td>
+                            <td>'.$billboard->longitude.'</td>
+                            <td>'.$billboard->traffic_counts.'</td>
                         </tr>
                         </tbody>
                     </table>
