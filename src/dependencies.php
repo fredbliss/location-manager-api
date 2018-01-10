@@ -3,6 +3,7 @@
 
 use Aura\Sql\ExtendedPdo;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 // DIC configuration
 $container = $app->getContainer();
@@ -12,7 +13,9 @@ $container['csrf'] = function ($c) {
 };
 
 $container['dompdf'] = function ($c) {
-    $dompdf = new Dompdf();
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $dompdf = new Dompdf($options);
     return $dompdf;
 };
 
