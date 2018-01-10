@@ -25,7 +25,7 @@ $app->group('/locations', function() {
             if(!is_array($billboard_data[$row['billboard_id']]))
                 $billboard_data[$row['billboard_id']] = array_merge($row,$arrRow);
 
-            $billboard_data[$row['billboard_id']]['directions'][$arrDir[0]] = array('id'=>$row['id'],'facing'=>$arrDir[0]);
+            $billboard_data[$row['billboard_id']]['directions'][$arrDir[0]] = array('id'=>$row['id'],'facing'=>$this->helpers->getDirectionLabel($arrDir[0]));
         }
 
         foreach($billboard_data as $billboard) {
@@ -33,7 +33,7 @@ $app->group('/locations', function() {
             $billboard_final = $billboard;
             unset($billboard_final['directions']);
             foreach($billboard['directions'] as $direction) {
-                $billboard_final['directions'][] = $this->helpers->getDirectionLabel($direction);
+                $billboard_final['directions'][] = $direction;
             }
 
             $billboards[] = $billboard_final;
