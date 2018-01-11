@@ -9,6 +9,102 @@ class Helpers {
         $this->container = $c;
     }
 
+    public function generatePdfTemplate($billboard,$directionLabel) {
+        $strTemplate = '<!DOCTYPE html>
+                <html>
+                <head>
+                <meta http-equiv="Content-Type" content="text/html;" charset=\'utf-8\'>
+                <style>
+                    body{color: black;font-family: Helvetica; margin: 0; padding: 0; }
+                    div{display:block;position:relative;}
+                    h1 {margin:0;padding:0;line-height:3.2rem;font-size:3rem;}
+                    h3 {font-size:24px;}
+                    .header, .main, .footer, .images, .statistics{clear:both;}
+                    .image {width:50%; float:left; text-align:center;display:inline-block;}
+                    .image > img{width:300px;border:1px solid #000000;padding:0;}
+                    table{width:100%;margin:30px 0px 30px 0px;}
+                    .text-center{text-align:center;}
+                    .inside{display:inline-block;}
+                    .title{float:left;}
+                    .logo{float:right;}
+                    .map-container {
+                        display: block;
+                        background-image: url("https://maps.googleapis.com/maps/api/staticmap?center='.$billboard->latitude.','.$billboard->longitude.'&markers=color:blue%7C'.$billboard->latitude.','.$billboard->longitude.'&size=540x540&zoom=10&maptype=hybrid&sensor=false&key=AIzaSyCnCmpnxnMX-HLfiR4U2FvinL7dFmNVUTI");
+                        background-repeat: no-repeat;
+                        background-position: 50% 50%;
+                        line-height: 0;
+                    }                    
+                    .map-container img
+                    {
+                        max-width: 100%;
+                        opacity: 1;
+                    }
+                </style>
+                <title>Billboard Spec Sheet</title>
+                </head>
+                <body>
+                <div class="header">
+                    <div class="inside">
+                        <div class="title">
+                            <h2>Billboard '.$billboard->billboard_id.'</h2>  
+                        </div>
+                        <div class="logo">
+                            <img class="text-center" src="images/logo.png" height="50" />   
+                        </div>
+                    </div>
+                </div> 
+                <div class="main">
+                    <div class="inside">
+                    <h3 class="text-center">Located '.$billboard->location.'</h3>
+                    </div>                
+                </div>
+                <div class="images">
+                    <div class="inside">
+                        <div class="image">
+                            <img src="images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" />
+                            <div>Viewable by '.$directionLabel.' traffic</div>
+                        </div>
+                        <div class="image map-container">
+                            <img class="img-fluid" src="https://maps.googleapis.com/maps/api/staticmap?center='.$billboard->latitude.','.$billboard->longitude.'&markers=color:blue%7C'.$billboard->latitude.','.$billboard->longitude.'&size=540x540&zoom=10&maptype=hybrid&sensor=false&key=AIzaSyCnCmpnxnMX-HLfiR4U2FvinL7dFmNVUTI">
+                        </div>
+                    </div>
+                </div>  
+                <div class="statistics">
+                    <div class="inside">
+                    <table class="text-center">
+                        <thead>  
+                        <tr>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>County</th>
+                            <th>Highway</th>
+                            <th>Size</th>
+                            <th>Faces</th>
+                            <th>Illumination</th>
+                            <th>Structure Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>'.$billboard->city.'</td>
+                            <td>'.$billboard->state.'</td>
+                            <td>'.$billboard->county.'</td>
+                            <td>'.$billboard->highway.'</td>
+                            <td>'.$billboard->size.'</td>
+                            <td>'.$billboard->faces.'</td>
+                            <td>'.$billboard->illumination.'</td>
+                            <td>'.$billboard->structure_type.'</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>                   
+                </body>
+                </html>';
+
+        return $strTemplate;
+    }
+
     public function generateTemplate($billboard,$directionLabel) {
         $strTemplate = '<!DOCTYPE html>
                 <html>
@@ -75,7 +171,7 @@ class Helpers {
                 $strTemplate .= '
                 <div class="row justify-content-md-center imagery">
                     <div class="col">
-                        <img src="../../images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" class="img-fluid" />
+                        <img src="../images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" class="img-fluid" />
                     </div>
                     <div class="col map-container">
                         <img class="img-fluid" src="//maps.googleapis.com/maps/api/staticmap?center='.$billboard->latitude.','.$billboard->longitude.'&markers=color:blue%7C'.$billboard->latitude.','.$billboard->longitude.'&size=540x540&zoom=10&maptype=hybrid&sensor=false&key=AIzaSyCnCmpnxnMX-HLfiR4U2FvinL7dFmNVUTI">
@@ -170,6 +266,16 @@ class Helpers {
 
 
         return ($sth ? $sth->fetchObject() : false);
+    }
+
+    public function generatePdf($strContent) {
+        $pdf = $this->container['dompdf'];
+
+        $pdf->loadHtml($strContent);
+
+        $pdf->render();
+
+        return $pdf;
     }
 
     public function getDirectionLabel($strDirection) {

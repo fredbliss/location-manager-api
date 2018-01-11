@@ -73,5 +73,40 @@ $app->group('/locations', function() {
 
     });
 
+    $this->get('/{id}/pdf',function(Request $request, Response $response, array $args) {
+
+        $billboard = $this->helpers->getOne('billboards', 'id', $args['id']);
+
+        $direction = explode("-",$billboard->panel);
+
+        $directionLabel = $this->helpers->getDirectionLabel($direction[0]);
+
+        $datetime = new DateTime();
+        $date = $datetime->format("m-d-Y");
+
+        $strFilename = 'billboard-'.$args['id'].'-'.$date.'.pdf';
+        $strFilePath = __DIR__ . '/'.$strFilename;
+        $file = fopen($strFilePath,'w+'); //will create if doesn't exist
+
+        $pdf = $this->helpers->generatePdf($this->helpers->generatePdfTemplate($billboard,$directionLabel));
+
+        fwrite($file,$pdf->output());
+
+        $stream = new \Slim\Http\Stream($file); // create a stream instance for the response body
+
+        return $response->withHeader('Content-Type', 'application/pdf')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->withHeader('Content-Description', 'File Transfer')
+            ->withHeader('Content-Disposition', 'attachment; filename="' .$strFilename . '"')
+            #->withHeader('Content-Transfer-Encoding', 'binary')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate')
+            ->withHeader('Pragma', 'public')
+            ->withHeader('Content-Length', filesize($strFilePath))
+            ->withBody($stream); // all stream contents will be sent to the response
+    });
+
 });
 
