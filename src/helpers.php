@@ -115,6 +115,7 @@ class Helpers {
                     @page{ size: A4; }
                     @media print {
                         .container { width: auto; }
+                        .no-print { display:none; }
                     }
                     body{color: black;font-family: Helvetica; margin: 0; padding: 0; }
                     .header{margin-bottom:30px;}
@@ -138,6 +139,11 @@ class Helpers {
                         max-width: 100%;
                         opacity: 1;
                     }
+                    .icon {
+                        height:24px;
+                        width:24px;
+                        margin-bottom:6px;
+                    }
                     iframe{width:100%;height:100%;position:relative;}
                     table{width:100%;margin:30px 0px 30px 0px;}
                     td, th { border:1px solid #000000; padding:4px;}
@@ -153,10 +159,10 @@ class Helpers {
                         <div class="col">
                             <div class="row">
                                 <div class="col-8 title">
-                                    <h2>Billboard '.$billboard->billboard_id.'</h2>  
+                                    <h2>Billboard '.$billboard->billboard_id.' <img src="../node_modules/open-iconic/svg/print.svg" alt="print" class="icon no-print" onclick="window.print()"></h2>  
                                 </div>
                                 <div class="col-4 text-right">
-                                    <img class="text-center" src="../../images/logo.png" height="50" />   
+                                    <img class="text-center" src="../images/logo.png" height="50" /> 
                                 </div>
                             </div>
                         </div>
