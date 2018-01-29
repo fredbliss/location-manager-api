@@ -61,7 +61,7 @@ class Helpers {
                 <div class="images">
                     <div class="inside">
                         <div class="image">
-                            <img src="images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" />
+                            <img src="../../small/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" />
                             <div>Viewable by '.$directionLabel.' traffic</div>
                         </div>
                         <div class="image map-container">
@@ -177,7 +177,7 @@ class Helpers {
                 $strTemplate .= '
                 <div class="row justify-content-md-center imagery">
                     <div class="col">
-                        <img src="../images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" class="img-fluid" />
+                        <img src="../../small/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" class="img-fluid" />
                     </div>
                     <div class="col map-container">
                         <img class="img-fluid" src="//maps.googleapis.com/maps/api/staticmap?center='.$billboard->latitude.','.$billboard->longitude.'&markers=color:blue%7C'.$billboard->latitude.','.$billboard->longitude.'&size=540x540&zoom=10&maptype=hybrid&sensor=false&key=AIzaSyCnCmpnxnMX-HLfiR4U2FvinL7dFmNVUTI">

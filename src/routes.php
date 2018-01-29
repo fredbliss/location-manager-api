@@ -8,7 +8,6 @@ $app->options('/{locations:.+}', function ($request, $response, $args) {
     return $response;
 });
 
-
 $app->group('/locations', function() {
 
     $this->get('/',function(Request $request, Response $response, array $args) {
@@ -59,6 +58,22 @@ $app->group('/locations', function() {
         $billboard = $this->helpers->getOne('billboards', 'id', $args['id']);
 
         //TODO: set direction by database
+        $direction = explode("-",$billboard->panel);
+
+        $directionLabel = $this->helpers->getDirectionLabel($direction[0]);
+
+        $datetime = new DateTime();
+        $date = $datetime->format("m-d-Y");
+
+        return $response->getBody()->write($this->helpers->generateTemplate($billboard,$directionLabel));
+
+    });
+
+    $this->get('/{id}/image',function(Request $request, Response $response, array $args) {
+
+        $billboard = $this->helpers->getOne('billboards', 'id', $args['id']);
+
+        //TODO: set direction by database
         /* $arrTrafficDirection['first'] = 'north-bound';
          $arrTrafficDirection['second'] = 'south-bound';
  */
@@ -69,7 +84,16 @@ $app->group('/locations', function() {
         $datetime = new DateTime();
         $date = $datetime->format("m-d-Y");
 
-        return $response->getBody()->write($this->helpers->generateTemplate($billboard,$directionLabel));
+        $image = @file_get_contents('../public/images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg');
+
+        if ($image === false) {
+            $response->write('Could Not Find ../public/images/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg');
+            return $response->withStatus(404);
+        }
+
+        $response->write($image);
+
+        return $response->withHeader('Content-Type', 'image/jpg');
 
     });
 
