@@ -173,21 +173,24 @@ class Helpers {
                         </div>                
                     </div>                
                 ';
-            #if($this->urlExists('http://vo.intelligentspark.com/assets/location-manager/assets/images/'.$billboard->billboard_id)) {
+
+                $arrImagePaths = glob('../small/'.$billboard->billboard_id.' '.substr($billboard->panel,0,2).'*.jpg');
+
+                #if($this->urlExists('http://vo.intelligentspark.com/assets/location-manager/assets/images/'.$billboard->billboard_id)) {
                 $strTemplate .= '
-                <div class="row justify-content-md-center imagery">
-                    <div class="col">
-                        <img src="../../small/'.$billboard->billboard_id.' '.$billboard->panel.'.jpg" class="img-fluid" />
-                    </div>
-                    <div class="col map-container">
-                        <img class="img-fluid" src="//maps.googleapis.com/maps/api/staticmap?center='.$billboard->latitude.','.$billboard->longitude.'&markers=color:blue%7C'.$billboard->latitude.','.$billboard->longitude.'&size=540x540&zoom=10&maptype=hybrid&sensor=false&key=AIzaSyCnCmpnxnMX-HLfiR4U2FvinL7dFmNVUTI">
-                    </div>
-                </div>
-                <div class="row justify-content-md-center">                
-                        <div class="col text-center">Viewable by '.$directionLabel.' traffic</div>
-                        <div class="col">&nbsp;</div>
-                </div>';
-            #}
+                        <div class="row justify-content-md-center imagery">
+                            <div class="col">
+                                <img onerror="this.src=\'../images/placeholder.jpg\'" id="billboard-image" src="../'.$arrImagePaths[0].'" class="img-fluid" />
+                            </div>
+                            <div class="col map-container">
+                                <img class="img-fluid" src="//maps.googleapis.com/maps/api/staticmap?center='.$billboard->latitude.','.$billboard->longitude.'&markers=color:blue%7C'.$billboard->latitude.','.$billboard->longitude.'&size=540x540&zoom=10&maptype=hybrid&sensor=false&key=AIzaSyCnCmpnxnMX-HLfiR4U2FvinL7dFmNVUTI">
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center">                
+                                <div class="col text-center">Viewable by '.$directionLabel.' traffic</div>
+                                <div class="col">&nbsp;</div>
+                        </div>';
+                #}
 
             $strTemplate .= '<div class="row statistics">
                     <div class="col-xs col-md col-offset-2">
@@ -238,7 +241,10 @@ class Helpers {
                     </div>
                 </div> 
                 </div><!--end container -->
-                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+                <script
+                src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>                 
                 </body>

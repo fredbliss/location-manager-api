@@ -24,7 +24,12 @@ $app->group('/locations', function() {
             if(!is_array($billboard_data[$row['billboard_id']]))
                 $billboard_data[$row['billboard_id']] = array_merge($row,$arrRow);
 
-            $billboard_data[$row['billboard_id']]['directions'][$arrDir[0]] = array('id'=>$row['id'],'facing'=>$this->helpers->getDirectionLabel($arrDir[0]), 'panel'=>$row['panel']);
+
+            $arrImagePaths = glob('../small/'.$row['billboard_id'].' '.substr($row['panel'],0,2).'*.jpg');
+
+            $varImage = (count($arrImagePaths)>0 ? basename($arrImagePaths[0]) : false);
+
+            $billboard_data[$row['billboard_id']]['directions'][$arrDir[0]] = array('id'=>$row['id'],'image'=>$varImage,'facing'=>$this->helpers->getDirectionLabel($arrDir[0]), 'facing_desc'=>$row['facing'], 'panel'=>$row['panel']);
         }
 
         foreach($billboard_data as $billboard) {
